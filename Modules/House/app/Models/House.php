@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\House\Database\Factories\HouseFactory;
+use Modules\House\Enums\House\StatusEnum;
 
 #[Fillable([
     'house_number',
@@ -21,6 +22,10 @@ use Modules\House\Database\Factories\HouseFactory;
 class House extends Model
 {
     use HasFactory, HasUuids;
+
+    protected $casts = [
+        'status' => StatusEnum::class,
+    ];
 
     public function residentHistories(): HasMany
     {

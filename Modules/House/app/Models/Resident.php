@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\House\Database\Factories\ResidentFactory;
+use Modules\House\Enums\Resident\ResidentTypeEnum;
 
 #[Fillable([
     'full_name',
@@ -26,6 +27,7 @@ class Resident extends Model
 
     protected $casts = [
         'is_married' => 'boolean',
+        'resident_type' => ResidentTypeEnum::class,
     ];
 
     public function houseHistories(): HasMany
