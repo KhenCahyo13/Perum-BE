@@ -2,7 +2,9 @@
 
 namespace $CLASS_NAMESPACE$;
 
-class $CLASS$
+use Modules\Core\Repositories\Repository;
+
+class $CLASS$ extends Repository
 {
-    public function handle() {}
+    public function __construct () {}
 }
