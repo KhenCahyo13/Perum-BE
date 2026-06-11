@@ -2,17 +2,14 @@
 
 namespace Modules\Core\Services;
 
-use Illuminate\Support\Facades\Cache;
-
-class RedisService extends Service
+class RedisService
 {
-    private const DEFAULT_TTL = 3600;
-
     // ─── Key builders ─────────────────────────────────────────────────────────
 
-    public static function houseListKey(int $page): string
+    public static function houseListKey(array $params): string
     {
-        return sprintf('houses:list:%d', $page);
+        ksort($params);
+        return 'houses:list:' . http_build_query(array_filter($params, fn ($v) => $v !== null && $v !== ''));
     }
 
     public static function houseDetailKey(string $id): string
@@ -20,9 +17,15 @@ class RedisService extends Service
         return sprintf('houses:detail:%s', $id);
     }
 
-    public static function residentListKey(int $page): string
+    public static function houseStatsKey(): string
     {
-        return sprintf('residents:list:%d', $page);
+        return 'houses:stats';
+    }
+
+    public static function residentListKey(array $params): string
+    {
+        ksort($params);
+        return 'residents:list:' . http_build_query(array_filter($params, fn ($v) => $v !== null && $v !== ''));
     }
 
     public static function residentDetailKey(string $id): string
@@ -50,19 +53,5 @@ class RedisService extends Service
     public static function residentTag(string $id): string
     {
         return sprintf('resident:%s', $id);
-    }
-
-    // ─── Cache operations ─────────────────────────────────────────────────────
-
-    public function remember(string $key, array $tags, callable $callback, int $ttl = self::DEFAULT_TTL): mixed
-    {
-        return Cache::tags($tags)->remember($key, $ttl, $callback);
-    }
-
-    public function flush(string ...$tags): void
-    {
-        foreach ($tags as $tag) {
-            Cache::tags([$tag])->flush();
-        }
     }
 }

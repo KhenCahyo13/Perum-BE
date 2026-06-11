@@ -20,16 +20,25 @@ class ResidentRepository extends Repository
         private readonly Resident $model,
     ) {}
 
-    public function paginate(int $perPage = 10): LengthAwarePaginator
+    public function paginate(array $params = []): LengthAwarePaginator
     {
-        return $this->model->newQuery()
+        $query = $this->model->newQuery()
             ->select(self::RESIDENT_COLUMNS)
             ->with(['houseHistories' => fn ($q) => $q
                 ->select(self::HISTORY_COLUMNS)
                 ->where('is_active', true)
                 ->with(['house' => fn ($q) => $q->select(self::NESTED_HOUSE_COLUMNS)]),
-            ])
-            ->paginate($perPage);
+            ]);
+
+        if (!empty($params['search'])) {
+            $search = $params['search'];
+            $query->where(fn ($q) => $q
+                ->where('full_name', 'like', "%{$search}%")
+                ->orWhere('phone_number', 'like', "%{$search}%")
+            );
+        }
+
+        return $query->paginate($params['limit'] ?? 10);
     }
 
     public function findById(string $id): ?Resident

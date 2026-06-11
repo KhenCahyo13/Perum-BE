@@ -7,6 +7,7 @@ use Modules\Core\Http\Controllers\Controller;
 use Modules\Core\Support\ApiResponse;
 use Modules\Core\Transformers\ApiPaginatedResource;
 use Modules\House\Http\Requests\House\AssignResidentRequest;
+use Modules\House\Http\Requests\House\GetHouseListRequest;
 use Modules\House\Http\Requests\House\StoreHouseRequest;
 use Modules\House\Http\Requests\House\UpdateHouseRequest;
 use Modules\House\Models\House;
@@ -25,10 +26,11 @@ class HouseController extends Controller
         return ApiResponse::success($this->houseService->stats(), message: 'Statistik rumah berhasil diambil.');
     }
 
-    public function index(): JsonResponse
+    public function index(GetHouseListRequest $request): JsonResponse
     {
-        $paginator = $this->houseService->index();
-        $resource = ApiPaginatedResource::make($paginator, HouseResource::class);
+        $params    = $request->only(['page', 'limit', 'search', 'status']);
+        $paginator = $this->houseService->index($params);
+        $resource  = ApiPaginatedResource::make($paginator, HouseResource::class);
 
         return ApiResponse::success($resource->data(), message: 'Data rumah berhasil diambil.', meta: $resource->meta());
     }

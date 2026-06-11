@@ -6,6 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Modules\Core\Http\Controllers\Controller;
 use Modules\Core\Support\ApiResponse;
 use Modules\Core\Transformers\ApiPaginatedResource;
+use Modules\House\Http\Requests\Resident\GetResidentListRequest;
 use Modules\House\Http\Requests\Resident\StoreResidentRequest;
 use Modules\House\Http\Requests\Resident\UpdateResidentRequest;
 use Modules\House\Models\Resident;
@@ -19,10 +20,11 @@ class ResidentController extends Controller
         private readonly ResidentService $residentService,
     ) {}
 
-    public function index(): JsonResponse
+    public function index(GetResidentListRequest $request): JsonResponse
     {
-        $paginator = $this->residentService->index();
-        $resource = ApiPaginatedResource::make($paginator, ResidentResource::class);
+        $params    = $request->only(['page', 'limit', 'search']);
+        $paginator = $this->residentService->index($params);
+        $resource  = ApiPaginatedResource::make($paginator, ResidentResource::class);
 
         return ApiResponse::success($resource->data(), message: 'Data penghuni berhasil diambil.', meta: $resource->meta());
     }

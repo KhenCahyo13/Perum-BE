@@ -18,11 +18,23 @@ class HouseRepository extends Repository
         private readonly House $model,
     ) {}
 
-    public function paginate(int $perPage = 10): LengthAwarePaginator
+    public function paginate(array $params = []): LengthAwarePaginator
     {
-        return $this->model->newQuery()
-            ->select(self::HOUSE_COLUMNS)
-            ->paginate($perPage);
+        $query = $this->model->newQuery()->select(self::HOUSE_COLUMNS);
+
+        if (!empty($params['search'])) {
+            $search = $params['search'];
+            $query->where(fn ($q) => $q
+                ->where('house_number', 'like', "%{$search}%")
+                ->orWhere('address', 'like', "%{$search}%")
+            );
+        }
+
+        if (!empty($params['status'])) {
+            $query->where('status', $params['status']);
+        }
+
+        return $query->paginate($params['limit'] ?? 10);
     }
 
     public function findById(string $id): ?House
