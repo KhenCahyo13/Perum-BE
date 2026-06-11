@@ -4,11 +4,13 @@ namespace Modules\Bill\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Modules\Bill\Database\Factories\BillFactory;
 use Modules\House\Models\House;
 use Modules\House\Models\Resident;
 
@@ -21,6 +23,7 @@ use Modules\House\Models\Resident;
     'status',
 ])]
 #[Table('bills')]
+#[UseFactory(BillFactory::class)]
 class Bill extends Model
 {
     use HasFactory, HasUuids;
