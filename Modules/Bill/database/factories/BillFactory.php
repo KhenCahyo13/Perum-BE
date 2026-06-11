@@ -21,12 +21,12 @@ class BillFactory extends Factory
         $billingMonth->modify('first day of this month');
 
         return [
-            'house_id'      => House::factory()->occupied(),
-            'resident_id'   => Resident::factory(),
-            'fee_type_id'   => FeeType::factory(),
+            'house_id' => House::factory()->occupied(),
+            'resident_id' => Resident::factory(),
+            'fee_type_id' => FeeType::factory(),
             'billing_month' => $billingMonth->format('Y-m-d'),
-            'due_date'      => $billingMonth->modify('last day of this month')->format('Y-m-d'),
-            'status'        => fake()->randomElement(['unpaid', 'paid', 'late']),
+            'due_date' => $billingMonth->modify('last day of this month')->format('Y-m-d'),
+            'status' => fake()->randomElement(['unpaid', 'paid', 'late']),
         ];
     }
 

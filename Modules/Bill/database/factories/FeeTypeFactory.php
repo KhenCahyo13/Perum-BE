@@ -15,7 +15,7 @@ class FeeTypeFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'   => fake()->randomElement(['Satpam', 'Kebersihan']),
+            'name' => fake()->randomElement(['Satpam', 'Kebersihan']),
             'amount' => fake()->randomElement([100000, 15000]),
         ];
     }

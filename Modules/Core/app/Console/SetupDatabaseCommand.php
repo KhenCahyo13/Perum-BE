@@ -40,9 +40,9 @@ class SetupDatabaseCommand extends Command
         foreach ($this->migrationPaths() as $path) {
             $this->info("Migrating {$path}...");
             $this->call('migrate', [
-                '--path'     => base_path($path),
+                '--path' => base_path($path),
                 '--realpath' => true,
-                '--force'    => $this->option('force'),
+                '--force' => $this->option('force'),
             ]);
         }
 
@@ -73,7 +73,7 @@ class SetupDatabaseCommand extends Command
             $resident = Resident::factory()->permanent()->create();
 
             HouseResidentHistory::factory()->active()->create([
-                'house_id'    => $house->id,
+                'house_id' => $house->id,
                 'resident_id' => $resident->id,
             ]);
 
@@ -96,7 +96,7 @@ class SetupDatabaseCommand extends Command
     {
         foreach (range(2, 0) as $monthsAgo) {
             $billingMonth = now()->subMonths($monthsAgo)->startOfMonth();
-            $dueDate      = $billingMonth->copy()->endOfMonth();
+            $dueDate = $billingMonth->copy()->endOfMonth();
 
             $feeTypes->each(function (FeeType $feeType) use ($house, $resident, $billingMonth, $dueDate, $monthsAgo) {
                 $status = $monthsAgo > 0
@@ -109,8 +109,8 @@ class SetupDatabaseCommand extends Command
                     ->forFeeType($feeType)
                     ->create([
                         'billing_month' => $billingMonth->format('Y-m-d'),
-                        'due_date'      => $dueDate->format('Y-m-d'),
-                        'status'        => $status,
+                        'due_date' => $dueDate->format('Y-m-d'),
+                        'status' => $status,
                     ]);
 
                 if ($status === 'paid') {

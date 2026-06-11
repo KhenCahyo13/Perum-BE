@@ -16,10 +16,10 @@ class PaymentFactory extends Factory
     public function definition(): array
     {
         return [
-            'bill_id'      => Bill::factory()->paid(),
+            'bill_id' => Bill::factory()->paid(),
             'payment_date' => fake()->dateTimeBetween('-1 year', 'now')->format('Y-m-d'),
-            'amount'       => fake()->randomElement([15000, 100000]),
-            'notes'        => fake()->optional(0.3)->sentence(),
+            'amount' => fake()->randomElement([15000, 100000]),
+            'notes' => fake()->optional(0.3)->sentence(),
         ];
     }
 
@@ -27,7 +27,7 @@ class PaymentFactory extends Factory
     {
         return $this->state([
             'bill_id' => $bill->id,
-            'amount'  => $bill->feeType->amount,
+            'amount' => $bill->feeType->amount,
         ]);
     }
 }

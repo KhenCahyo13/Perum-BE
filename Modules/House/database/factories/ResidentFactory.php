@@ -15,11 +15,11 @@ class ResidentFactory extends Factory
     public function definition(): array
     {
         return [
-            'full_name'       => fake()->name(),
-            'ktp_file_url'    => 'ktp/' . fake()->uuid() . '.jpg',
-            'phone_number'    => fake()->unique()->numerify('08###########'),
-            'is_married'      => fake()->boolean(),
-            'resident_type'   => fake()->randomElement(['permanent', 'contract']),
+            'full_name' => fake()->name(),
+            'ktp_file_url' => 'ktp/'.fake()->uuid().'.jpg',
+            'phone_number' => fake()->unique()->numerify('08###########'),
+            'is_married' => fake()->boolean(),
+            'resident_type' => fake()->randomElement(['permanent', 'contract']),
         ];
     }
 

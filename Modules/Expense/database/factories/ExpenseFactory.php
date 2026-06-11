@@ -16,10 +16,10 @@ class ExpenseFactory extends Factory
     public function definition(): array
     {
         return [
-            'category_id'  => ExpenseCategory::factory(),
-            'description'  => fake()->optional(0.6)->sentence(),
-            'amount'       => fake()->numberBetween(50000, 5000000),
-            'date'         => fake()->dateTimeBetween('-1 year', 'now')->format('Y-m-d'),
+            'category_id' => ExpenseCategory::factory(),
+            'description' => fake()->optional(0.6)->sentence(),
+            'amount' => fake()->numberBetween(50000, 5000000),
+            'date' => fake()->dateTimeBetween('-1 year', 'now')->format('Y-m-d'),
             'is_recurring' => fake()->boolean(30),
         ];
     }

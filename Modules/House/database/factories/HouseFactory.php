@@ -16,8 +16,8 @@ class HouseFactory extends Factory
     {
         return [
             'house_number' => fake()->unique()->bothify('Blok ?-##'),
-            'address'      => fake()->streetAddress(),
-            'status'       => fake()->randomElement(['occupied', 'vacant']),
+            'address' => fake()->streetAddress(),
+            'status' => fake()->randomElement(['occupied', 'vacant']),
         ];
     }
 

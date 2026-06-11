@@ -26,7 +26,7 @@ class AuthService extends Service
         return [
             'data' => $user,
             'meta' => [
-                'token'      => $token,
+                'token' => $token,
                 'token_type' => 'Bearer',
             ],
         ];
@@ -46,7 +46,7 @@ class AuthService extends Service
         return [
             'data' => $user,
             'meta' => [
-                'token'      => $token,
+                'token' => $token,
                 'token_type' => 'Bearer',
             ],
         ];

@@ -25,7 +25,7 @@ class Expense extends Model
     use HasFactory, HasUuids;
 
     protected $casts = [
-        'date'         => 'date',
+        'date' => 'date',
         'is_recurring' => 'boolean',
     ];
 

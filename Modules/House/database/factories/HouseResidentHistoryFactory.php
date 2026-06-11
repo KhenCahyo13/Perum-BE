@@ -19,11 +19,11 @@ class HouseResidentHistoryFactory extends Factory
         $startDate = fake()->dateTimeBetween('-2 years', '-3 months');
 
         return [
-            'house_id'    => House::factory(),
+            'house_id' => House::factory(),
             'resident_id' => Resident::factory(),
-            'start_date'  => $startDate->format('Y-m-d'),
-            'end_date'    => null,
-            'is_active'   => true,
+            'start_date' => $startDate->format('Y-m-d'),
+            'end_date' => null,
+            'is_active' => true,
         ];
     }
 
@@ -38,7 +38,7 @@ class HouseResidentHistoryFactory extends Factory
             $endDate = fake()->dateTimeBetween('-2 months', 'now');
 
             return [
-                'end_date'  => $endDate->format('Y-m-d'),
+                'end_date' => $endDate->format('Y-m-d'),
                 'is_active' => false,
             ];
         });

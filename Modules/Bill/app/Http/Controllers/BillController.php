@@ -2,8 +2,8 @@
 
 namespace Modules\Bill\Http\Controllers;
 
-use Modules\Core\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Core\Http\Controllers\Controller;
 
 class BillController extends Controller
 {
