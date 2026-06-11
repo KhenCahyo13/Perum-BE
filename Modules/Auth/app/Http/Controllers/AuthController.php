@@ -2,55 +2,51 @@
 
 namespace Modules\Auth\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Modules\Auth\Http\Requests\LoginRequest;
+use Modules\Auth\Models\User;
+use Modules\Auth\Services\AuthService;
+use Modules\Core\Http\Controllers\Controller;
+use Modules\Core\Support\ApiResponse;
 
 class AuthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct(
+        private readonly AuthService $authService,
+    ) {}
+
+    public function login(LoginRequest $request): JsonResponse
     {
-        return view('auth::index');
+        $result = $this->authService->login(
+            $request->input('email'),
+            $request->input('password'),
+        );
+
+        if ($result === null) {
+            return ApiResponse::error(null, 'Email atau password salah.', 401);
+        }
+
+        return ApiResponse::success($result['data'], $result['meta'], 'Login berhasil.');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function logout(Request $request): JsonResponse
     {
-        return view('auth::create');
+        /** @var User $user */
+        $user = $request->user();
+
+        $this->authService->logout($user);
+
+        return ApiResponse::success(null, message: 'Logout berhasil.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
+    public function refresh(Request $request): JsonResponse
     {
-        return view('auth::show');
+        /** @var User $user */
+        $user = $request->user();
+
+        $result = $this->authService->refresh($user);
+
+        return ApiResponse::success($result['data'], $result['meta'], 'Token berhasil diperbarui.');
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('auth::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id) {}
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
 }

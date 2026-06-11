@@ -2,7 +2,7 @@
 
 namespace Modules\Bill\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Modules\Core\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class BillController extends Controller

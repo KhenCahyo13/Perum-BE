@@ -2,7 +2,7 @@
 
 namespace Modules\House\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Modules\Core\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class HouseController extends Controller

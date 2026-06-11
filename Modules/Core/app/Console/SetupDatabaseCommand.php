@@ -161,6 +161,7 @@ class SetupDatabaseCommand extends Command
 
             // Auth
             'Modules/Auth/database/migrations/0001_01_01_000000_create_users_table.php',
+            'Modules/Auth/database/migrations/2026_06_11_000001_create_personal_access_tokens_table.php',
 
             // House
             'Modules/House/database/migrations/2026_06_11_000001_create_residents_table.php',
