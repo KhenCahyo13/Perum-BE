@@ -2,6 +2,7 @@
 
 namespace Modules\Core\Providers;
 
+use Modules\Core\Console\SetupDatabaseCommand;
 use Nwidart\Modules\Support\ModuleServiceProvider;
 use Illuminate\Console\Scheduling\Schedule;
 
@@ -22,7 +23,9 @@ class CoreServiceProvider extends ModuleServiceProvider
      *
      * @var string[]
      */
-    // protected array $commands = [];
+    protected array $commands = [
+        SetupDatabaseCommand::class,
+    ];
 
     /**
      * Provider classes to register.
