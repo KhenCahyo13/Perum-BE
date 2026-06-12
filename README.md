@@ -7,10 +7,7 @@ API administrasi perumahan untuk mengelola rumah, penghuni, tagihan, dan pengelu
 ---
 
 > [!NOTE]
-> **PDM tersedia di :**
-> ```
-> reports/pdm
-> ```
+> **PDM bisa dibaca pada reports/pdm, dan untuk laporan fitur tersedia pada repository FE**
 
 ---
 
