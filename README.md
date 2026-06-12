@@ -1,58 +1,242 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Perum API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API administrasi perumahan untuk mengelola rumah, penghuni, tagihan, dan pengeluaran.
 
-## About Laravel
+> **Skill Fit Test — Full Stack Programmer @ Beon Intermedia**
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+> [!NOTE]
+> **PDM bisa dibaca pada reports/pdm, dan untuk laporan fitur tersedia pada repository FE**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Persyaratan
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Dependensi | Versi Minimum |
+|---|---|
+| PHP | 8.3+ |
+| MySQL | 8.0+ |
+| Composer | 2.x |
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Instalasi
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### 1. Clone Repository
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/KhenCahyo13/perum-api.git
+cd perum-api
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Install Dependensi
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Konfigurasi Environment
 
-## Code of Conduct
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Edit `.env` sesuaikan konfigurasi database:
 
-## Security Vulnerabilities
+```env
+APP_NAME="Perum API"
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://localhost:8000
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=perum_api
+DB_USERNAME=root
+DB_PASSWORD=
 
-## License
+FILESYSTEM_DISK=public
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 4. Buat Database
+
+Buat database MySQL dengan nama yang sesuai di `.env` (default: `perum_api`).
+
+### 5. Setup Database
+
+Jalankan migrasi dalam urutan dependency yang benar menggunakan command bawaan:
+
+```bash
+php artisan app:setup-database
+```
+
+Tambahkan flag `--with-factories` untuk mengisi data contoh (rumah, penghuni, tagihan, pengeluaran):
+
+```bash
+php artisan app:setup-database --with-factories
+```
+
+> Gunakan `--fresh` untuk drop semua tabel terlebih dahulu sebelum migrasi ulang (cocok untuk reset lokal).
+
+```bash
+php artisan app:setup-database --fresh --with-factories
+```
+
+### 6. Storage Link
+
+```bash
+php artisan storage:link
+```
+
+### 7. Jalankan Server
+
+```bash
+php artisan serve
+```
+
+API akan berjalan di `http://localhost:8000`.
+
+---
+
+## Autentikasi
+
+API menggunakan Laravel Sanctum (token-based). Login terlebih dahulu untuk mendapatkan token.
+
+**Login:**
+```
+POST /api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@perum.test",
+  "password": "password"
+}
+```
+
+> Kredensial di atas tersedia setelah menjalankan `app:setup-database --with-factories`.
+
+Gunakan token yang dikembalikan pada header setiap request yang memerlukan autentikasi:
+```
+Authorization: Bearer <token>
+```
+
+**Logout:**
+```
+POST /api/auth/logout
+```
+
+**Refresh Token:**
+```
+POST /api/auth/refresh
+```
+
+---
+
+## Daftar Endpoint
+
+### Reports / Dashboard
+
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| GET | `/api/reports/dashboard` | Data dashboard lengkap + data keuangan bulanan |
+
+### Houses (Rumah)
+
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| GET | `/api/houses/stats` | Statistik rumah |
+| GET | `/api/houses` | Daftar rumah (dengan filter & paginasi) |
+| POST | `/api/houses` | Tambah rumah baru |
+| GET | `/api/houses/{id}` | Detail rumah |
+| PATCH | `/api/houses/{id}` | Update rumah |
+| DELETE | `/api/houses/{id}` | Hapus rumah |
+| POST | `/api/houses/{id}/assign-resident` | Tetapkan penghuni ke rumah |
+| DELETE | `/api/houses/{id}/remove-resident` | Keluarkan penghuni dari rumah |
+
+**Query params `GET /api/houses`:** `page`, `limit`, `search`, `status` (`occupied`\|`vacant`)
+
+### Residents (Penghuni)
+
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| GET | `/api/residents/stats` | Statistik penghuni |
+| GET | `/api/residents` | Daftar penghuni (dengan filter & paginasi) |
+| POST | `/api/residents` | Tambah penghuni baru |
+| GET | `/api/residents/{id}` | Detail penghuni |
+| PATCH | `/api/residents/{id}` | Update penghuni |
+
+**Query params `GET /api/residents`:** `page`, `limit`, `search`, `residentType` (`permanent`\|`contract`)
+
+### Fee Types (Jenis Iuran)
+
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| GET | `/api/fee-types` | Daftar jenis iuran |
+| POST | `/api/fee-types` | Tambah jenis iuran |
+| GET | `/api/fee-types/{id}` | Detail jenis iuran |
+| PATCH | `/api/fee-types/{id}` | Update jenis iuran |
+| DELETE | `/api/fee-types/{id}` | Hapus jenis iuran |
+
+### Bills (Tagihan)
+
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| GET | `/api/bills/stats` | Statistik tagihan |
+| GET | `/api/bills` | Daftar tagihan (dengan filter & paginasi) |
+| POST | `/api/bills` | Buat tagihan baru |
+| GET | `/api/bills/{id}` | Detail tagihan |
+| PATCH | `/api/bills/{id}` | Update tagihan |
+| DELETE | `/api/bills/{id}` | Hapus tagihan |
+
+**Query params `GET /api/bills`:** `page`, `limit`, `search`, `status` (`unpaid`\|`paid`\|`late`), `houseId`, `billingMonth` (format: `YYYY-MM`)
+
+### Payments (Pembayaran)
+
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| POST | `/api/payments` | Catat pembayaran tagihan |
+| DELETE | `/api/payments/{id}` | Batalkan pembayaran |
+
+### Expense Categories (Kategori Pengeluaran)
+
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| GET | `/api/expense-categories` | Daftar kategori pengeluaran |
+| POST | `/api/expense-categories` | Tambah kategori |
+| GET | `/api/expense-categories/{id}` | Detail kategori |
+| PATCH | `/api/expense-categories/{id}` | Update kategori |
+| DELETE | `/api/expense-categories/{id}` | Hapus kategori |
+
+### Expenses (Pengeluaran)
+
+| Method | Endpoint | Deskripsi |
+|---|---|---|
+| GET | `/api/expenses/stats` | Statistik pengeluaran |
+| GET | `/api/expenses` | Daftar pengeluaran (dengan filter & paginasi) |
+| POST | `/api/expenses` | Tambah pengeluaran baru |
+| GET | `/api/expenses/{id}` | Detail pengeluaran |
+| PATCH | `/api/expenses/{id}` | Update pengeluaran |
+| DELETE | `/api/expenses/{id}` | Hapus pengeluaran |
+
+**Query params `GET /api/expenses`:** `page`, `limit`, `search`, `categoryId`, `isRecurring` (`true`\|`false`), `month` (format: `YYYY-MM`)
+
+---
+
+## Struktur Modul
+
+```
+Modules/
+├── Core/           # Shared base classes, helpers, dan report/dashboard endpoint
+├── House/          # Rumah & penghuni (termasuk riwayat hunian)
+├── Bill/           # Tagihan, jenis iuran, dan pembayaran
+└── Expense/        # Pengeluaran dan kategori pengeluaran
+```
+
+## Stack
+
+- **Framework:** Laravel 13.8
+- **Modular:** nwidart/laravel-modules 13.x
+- **Auth:** Laravel Sanctum 4.x
+- **PHP:** 8.3+
+- **Database:** MySQL 8.0+

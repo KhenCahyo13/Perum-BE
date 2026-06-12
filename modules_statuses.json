@@ -1,0 +1,7 @@
+{
+    "House": true,
+    "Bill": true,
+    "Expense": true,
+    "Auth": true,
+    "Core": true
+}

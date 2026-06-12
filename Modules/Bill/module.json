@@ -1,0 +1,11 @@
+{
+    "name": "Bill",
+    "alias": "bill",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Bill\\Providers\\BillServiceProvider"
+    ],
+    "files": []
+}

@@ -1,0 +1,10 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use Modules\Core\Services\Service;
+
+class $CLASS$ extends Service
+{
+    public function __construct () {}
+}
