@@ -38,6 +38,10 @@ class ResidentRepository extends Repository
             );
         }
 
+        if (!empty($params['residentType'])) {
+            $query->where('resident_type', $params['residentType']);
+        }
+
         return $query->paginate($params['limit'] ?? 10);
     }
 
@@ -51,6 +55,25 @@ class ResidentRepository extends Repository
                 ->with(['house' => fn ($q) => $q->select(self::NESTED_HOUSE_COLUMNS)]),
             ])
             ->find($id);
+    }
+
+    public function stats(): array
+    {
+        $counts = $this->model->newQuery()
+            ->selectRaw('COUNT(*) as total')
+            ->selectRaw('SUM(resident_type = ?) as contract', ['contract'])
+            ->selectRaw('SUM(resident_type = ?) as permanent', ['permanent'])
+            ->selectRaw('SUM(is_married = 1) as married')
+            ->selectRaw('SUM(is_married = 0) as single')
+            ->first();
+
+        return [
+            'totalResidents'          => (int) $counts->total,
+            'totalContractResidents'  => (int) $counts->contract,
+            'totalPermanentResidents' => (int) $counts->permanent,
+            'totalMarriedResidents'   => (int) $counts->married,
+            'totalSingleResidents'    => (int) $counts->single,
+        ];
     }
 
     public function create(array $data): Resident

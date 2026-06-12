@@ -20,9 +20,14 @@ class ResidentController extends Controller
         private readonly ResidentService $residentService,
     ) {}
 
+    public function stats(): JsonResponse
+    {
+        return ApiResponse::success($this->residentService->stats(), message: 'Statistik penghuni berhasil diambil.');
+    }
+
     public function index(GetResidentListRequest $request): JsonResponse
     {
-        $params    = $request->only(['page', 'limit', 'search']);
+        $params    = $request->only(['page', 'limit', 'search', 'residentType']);
         $paginator = $this->residentService->index($params);
         $resource  = ApiPaginatedResource::make($paginator, ResidentResource::class);
 

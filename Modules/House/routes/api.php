@@ -17,6 +17,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('residents')->name('residents.')->group(function () {
+        Route::get('/stats', [ResidentController::class, 'stats'])->name('stats');
         Route::get('/', [ResidentController::class, 'index'])->name('index');
         Route::post('/', [ResidentController::class, 'store'])->name('store');
         Route::get('/{resident}', [ResidentController::class, 'show'])->name('show');

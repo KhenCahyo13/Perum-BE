@@ -23,6 +23,11 @@ class ResidentService extends Service
         return $this->residentRepository->findById($id);
     }
 
+    public function stats(): array
+    {
+        return $this->residentRepository->stats();
+    }
+
     public function store(array $data): Resident
     {
         $resident = $this->residentRepository->create($data);
