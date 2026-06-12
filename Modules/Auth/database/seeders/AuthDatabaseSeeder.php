@@ -3,14 +3,20 @@
 namespace Modules\Auth\Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Modules\Auth\Models\User;
 
 class AuthDatabaseSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // $this->call([]);
+        User::updateOrCreate(
+            ['email' => 'admin@perum.test'],
+            [
+                'name'     => 'Admin Perumahan',
+                'email'    => 'admin@perum.test',
+                'password' => Hash::make('password'),
+            ]
+        );
     }
 }

@@ -55,8 +55,15 @@ class SetupDatabaseCommand extends Command
 
     private function runFactories(): void
     {
-        $this->info('Creating 2 admin users...');
-        User::factory()->count(2)->create();
+        $this->info('Creating admin user...');
+        User::updateOrCreate(
+            ['email' => 'admin@perum.test'],
+            [
+                'name'     => 'Admin Perumahan',
+                'email'    => 'admin@perum.test',
+                'password' => \Illuminate\Support\Facades\Hash::make('password'),
+            ]
+        );
 
         $this->info('Creating fee types (Satpam & Kebersihan)...');
         $feeTypes = collect([
